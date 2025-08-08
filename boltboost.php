@@ -34,7 +34,7 @@ final class BoltBoost {
     */
     private function __construct() {
         $this->define_constants();
-        
+
         add_action( 'plugins_loaded', [ $this, 'plugin_setup' ] );
     }
 

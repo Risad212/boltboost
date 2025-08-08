@@ -30,6 +30,6 @@ class Menu {
      * @access public
      */
     public function plugin_page() {
-        echo 'hello ';
+        require_once dirname(__DIR__) . '/templates/layout.php';
     }
 }

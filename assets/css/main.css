@@ -1,0 +1,13 @@
+.bb-layout{
+    display: flex;
+}
+
+.bb-sidebar {
+    background-color: #ddd;
+    border-right: 1px solid #ddd;
+    box-sizing: border-box;
+    height: 100dvh;
+    min-width: 280px;
+    padding: 24px;
+    width: 280px
+}
