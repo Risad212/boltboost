@@ -1,13 +1,99 @@
-.bb-layout{
+.bb-layout {
+    margin-left: -20px;
+}
+
+.bb-layout-wrap {
     display: flex;
 }
 
 .bb-sidebar {
-    background-color: #ddd;
+    background-color: #fff;
     border-right: 1px solid #ddd;
     box-sizing: border-box;
     height: 100dvh;
     min-width: 280px;
     padding: 24px;
     width: 280px
+}
+
+.bb-menu-item a {
+    border: 2px solid transparent;
+    border-radius: 30px;
+    box-sizing: border-box;
+    color: #062a5d;
+    cursor: pointer;
+    display: flex;
+    font-size: 16px;
+    font-weight: 500;
+    gap: 8px;
+    height: 52px;
+    line-height: 1.2;
+    margin: 0;
+    padding: 16px 24px;
+    text-decoration: none;
+}
+
+.bb-menu-item a svg {
+    fill: #4f575b;
+}
+
+.bb-menu-item .active {
+    background-color: #eaf8ff;
+    border-color: #aee2ff;
+    font-weight: 700;
+}
+
+.bb-content {
+    max-width: 1116px;
+    width: 100%;
+    padding: 40px 32px;
+    background: #e4e4e6;
+}
+
+/*-------- header -----------*/
+.overview {
+    color: #6b7280;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.bb-content-header .header-flex {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+}
+
+.header-flex h3 {
+    margin: 0;
+    color: #000;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.header-flex .active {
+    align-items: center;
+    background: #b2f5d9;
+    border-radius: 16px;
+    color: #00854e;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 600;
+    gap: 4px;
+    height: 20px;
+    line-height: 1.2;
+    padding: 0 8px;
+    transition: all .3s ease;
+}
+
+.bb-content-header p{
+    color: #6b7280;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.6;
+    margin-top: 12px;
 }

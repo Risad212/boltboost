@@ -17,6 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // inclused folder
 include_once 'includes/Menu.php';
+include_once 'includes/Assets.php';
 
 final class BoltBoost {
 
@@ -59,11 +60,12 @@ final class BoltBoost {
     * @access public
     */
     public function define_constants() {
-        define( 'BB_VERSION', self::version );
-        define( 'BB_FILE',    __FILE__ );
-        define( 'BB_PATH',    __DIR__ );
-        define( 'BB_URL',     plugins_url( '', BB_FILE ) );
-        define( 'BB_ASSETS',  BB_URL . '/assets' );
+        define( 'BB_VERSION',  self::version );
+        define( 'BB_FILE',     __FILE__ );
+        define( 'BB_PATH',     __DIR__ );
+        define( 'BB_URL',      plugins_url( '', BB_FILE ) );
+        define( 'BB_ASSETS',   BB_URL . '/assets' );
+        define( 'BB_DIR_PATH', plugin_dir_path(BB_FILE) );
     }
 
     /**
@@ -73,6 +75,7 @@ final class BoltBoost {
     */
     public function plugin_setup(){
          if( is_admin() ){
+              new Assets();
               new Menu();
          }
     }
