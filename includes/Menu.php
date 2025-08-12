@@ -19,7 +19,7 @@ class Menu {
         'manage_options',                            // Capability
         'boltboost',                                 // Menu slug
         [ $this, 'plugin_page' ],                    // Callback function
-        'dashicons-vault'                            // Icon
+        'dashicons-dashboard'                            // Icon
     );
 
     }

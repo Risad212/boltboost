@@ -212,6 +212,10 @@
     top: 0;
 }
 
-.bb-dashboard__table td:not(:last-child) .data-progress-wrapper {
+.bb-data-progress-wrapper {
     margin-right: 50px;
+}
+
+.bb-dashboard__table td:last-child .bb-data-progress-wrapper {
+    margin-right: 0;
 }
