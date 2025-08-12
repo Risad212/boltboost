@@ -1,3 +1,7 @@
+<?php 
+  require_once BB_DIR_PATH . '/includes/PostType.php';
+?>
+
 <div id="bb-dashboard-post" class="bb-dashboard-section">
     <h4 class="bb-section-title">
         Post Type &amp; Metadata Overview
