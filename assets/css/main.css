@@ -1,3 +1,9 @@
+.wp-admin.toplevel_page_boltboost #wpbody-content {
+    padding-bottom: 0;
+}
+
+/*======== Style Start ==========*/
+
 .bb-layout {
     margin-left: -20px;
 }
@@ -44,7 +50,7 @@
 }
 
 .bb-content {
-    max-width: 1116px;
+    max-width: 90%;
     width: 100%;
     padding: 40px 32px;
     background: #e4e4e6;

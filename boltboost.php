@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // inclused folder
-include_once 'includes/Menu.php';
+include_once 'includes/BB-Menu.php';
 include_once 'includes/Assets.php';
 
 final class BoltBoost {
@@ -76,7 +76,7 @@ final class BoltBoost {
     public function plugin_setup(){
          if( is_admin() ){
               new Assets();
-              new Menu();
+              new BB_Menu();
          }
     }
 

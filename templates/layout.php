@@ -34,10 +34,9 @@
                      <p>Perform a one-click audit every day to maintain peak performance and security.
                            Integrate this plugin into your routine to proactively identify and resolve issues before they impact your users.</p>
                    </div>
-                </div>
                 <!-------- Post type template ---------->
                 <?php include_once BB_DIR_PATH .'/templates/post-type.php';?>
             </div>
-        </div>
-    </div>
+         </div>
+    </div> 
 </section>

@@ -1,7 +1,7 @@
 <?php
 
 
-class Menu {
+class BB_Menu {
 
     function __construct() {
         add_action( 'admin_menu', [ $this, 'admin_menu' ] );
