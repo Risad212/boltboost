@@ -1,4 +1,9 @@
 <section class="bb-layout">
+    <header class="bb-dashboard-header">
+        <a class="bb-logo" href="#">
+            <img class="bb-log-img" src="<?php echo BB_ASSETS ?>/img/logo.svg" alt="Logo">
+        </a>
+    </header>
     <div class="bb-layout-wrap">
         <div class="bb-left-column">
             <aside class="bb-sidebar">

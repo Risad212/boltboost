@@ -3,8 +3,6 @@
 class Post_Type{
    public function show(){
     
-
-
   
    }
 }
