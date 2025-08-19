@@ -109,7 +109,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>_orphaned_posts</td>
+                    <td>Elementor_library</td>
                     <td>
                         <span class="bb-data-wrapper">
                             <span class="bb-data-count">1</span>
