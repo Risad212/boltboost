@@ -208,8 +208,20 @@ class Post_Type {
       ];
 
       return self::$percentage;
-
      }
+
+     // check is there any value otherwise keep empty array
+     public static function get_orphaned_post_types() {
+		  return self::$cached_post_types_orphans ?? [];
+	  }
+
+    // final calculation
+    public static function get_details(){
+      $post_types = self::get_posts_count();
+      $post_meta = self::get_post_wise_meta();
+
+      
+    } 
 }
 
 $a = new Post_Type();
