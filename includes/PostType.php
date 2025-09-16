@@ -2,227 +2,118 @@
 
 class Post_Type {
 
-   // Cache properties to store results once queried
-    public static $total_meta_count     = null;
-    public static $total_revisions      = null;
-    public static $post_types           = null;
-    public static $total_post           = null;
-    public static $orphan_post          = null;
-    public static $post_meta_by_type    = null;
-    public static $percentage           = null;
+  private static $total_posts         =  null;
+  private static $post_types          =  null;
+  private static $post_types_orphans  =  null;
+  private static $revisions           =  null;
+  private static $post_meta_total     =  null;
+  private static $post_meta_by_type   =  null;
 
-    /**
-    * total post;
-    * 
-    * @access public
-    */
-    public static function get_posts_count() {
-    if ( null !== self::$total_post ) {
-      return self::$total_post;
-    }
+  // get post type count
+  public static function get_posts_count(){
+     if( null !== self::$total_posts ){
+        return self::$total_posts;
+     }
 
-      global $wpdb;
-      self::$total_post = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type NOT IN ('revision', 'nav_menu_item')" );
+     // query all post except reiviions and nan_menu_item in variable
+     global $wpdb;
+     self::$total_posts = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type NOT IN ('revision', 'nav_menu_item')" );
 
-      return self::$total_post;
-    }
+     return self::$total_posts;
+  } 
 
-    /**
-    * Get Post tyes;
-    * 
-    * @access public
-    */
-      public static function get_type_counts() {
-      if ( null !== self::$post_types ) {
+  // get post type count
+  public function get_type_counts(){
+    if( null !== self::$post_types ){
         return self::$post_types;
-      }
+    }
 
-      global $wpdb;
-      $results = $wpdb->get_results( "
-              SELECT post_type, COUNT(*) as count
-              FROM {$wpdb->posts}
-              WHERE post_type NOT IN ('revision', 'nav_menu_item')
-              GROUP BY post_type
-          ", ARRAY_A );
+    global $wpdb;
+    // query all post types as a count
+    	$results = $wpdb->get_results( "
+            SELECT post_type, COUNT(*) as count
+            FROM {$wpdb->posts}
+            WHERE post_type NOT IN ('revision', 'nav_menu_item')
+            GROUP BY post_type
+        ", ARRAY_A );
 
       $output = [];
-      foreach ( $results as $row ) {
-        $output[$row['post_type']] = (int) $row['count'];
-      }
+		foreach ( $results as $row ) {
+			$output[$row['post_type']] = $row['count'];
+	   }
 
-      // Add orphaned posts
-      $registered   = get_post_types();
-      $orphan_count = 0;
+     // Add orphaned posts
+		$registered   = get_post_types(); // get all post types
+		$orphan_count = 0;
 
-      foreach ( $output as $post_type => $count ) {
-        if ( ! in_array( $post_type, $registered, true ) ) {
-          $orphan_count += $count;
-          unset( $output[$post_type] );
-          self::$orphan_post[$post_type] = $count;
-        }
-      }
+		foreach ( $output as $post_type => $count ) {
+            // check if post types is a registered valid post types
+			if ( ! in_array( $post_type, $registered, true ) ) {
+				$orphan_count += $count;
+				unset( $output[$post_type] ); // we'll bucket them under _orphaned_posts
+				self::$post_types_orphans[$post_type] = $count;
+			}
+		}
 
-      if ( $orphan_count > 0 ) {
-        $output['_orphaned_posts'] = $orphan_count;
-      }
+		if ( $orphan_count > 0 ) {
+			$output['_orphaned_posts'] = $orphan_count;
+		}
 
-      self::$orphan_post = $output;
+		self::$post_types = $output;
+		return $output;
+  }
 
-      return $output;
-    }
+   // get revision count of post types
+   public static function get_revisions_count(){
+        if ( null !== self::$revisions ) {
+			return self::$revisions;
+		}
 
-    /**
-    * Get total post
-    * 
-    * @access public
-    */
-    public static function get_total_post(){
-      if( null !== self::$total_meta_count ){
-          return self::$total_meta_count;
-      }
+        global $wpdb;
+        // query all revison from wp_post table
+		self::$revisions = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'revision'" );
 
-      global $wpdb;
-      self::$total_meta_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->postmeta}" );
-     return self::$total_meta_count;
+		return self::$revisions;
+   } 
+
+   // total post meta
+   public static function get_meta_count(){
+     if ( null !== self::$post_meta_total ) {
+			return self::$post_meta_total;
+		}
+
+        global $wpdb;
+        // query all revison from wp_postmeta table
+		self::$post_meta_total = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->postmeta}" );
+
+		return self::$post_meta_total;
    }
 
+   // get post types wise meta count each post types how much meta availabe
+   public static function get_type_wise_meta_counts(){
+       if ( null !== self::$post_meta_by_type ) {
+			return self::$post_meta_by_type;
+		}
 
-   /**
-    * Get meta count
-    * 
-    * @access public
-    */
-    public static function get_total_meta(){
-      if( null !== self::$total_meta_count ){
-          return self::$total_meta_count;
-      }
+        global $wpdb;
+        $results = $wpdb->get_results( "
+            SELECT p.post_type, COUNT(pm.meta_id) as meta_count
+            FROM {$wpdb->posts} p
+            JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
+            WHERE p.post_type NOT IN ('revision', 'nav_menu_item')
+            GROUP BY p.post_type
+        ", ARRAY_A );
 
-      global $wpdb;
-      self::$total_meta_count = (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->postmeta}" );
-     return self::$total_meta_count;
+        $output = [];
+		foreach ( $results as $row ) {
+			$output[$row['post_type']] = (int) $row['meta_count'];
+		}
+
+		self::$post_meta_by_type = $output;
+
+		return $output;
    }
-
-   /**
-    * Get revisions count
-    * 
-    * @access public
-    */
-    public static function get_total_revisions(){
-      if( null !== self::$total_revisions ){
-          return self::$total_revisions;
-      }
-
-      global $wpdb;
-      self::$total_revisions = $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = 'revision'" );
-      return self::$total_revisions;
-   }
-
-   /**
-    * Get post by meta
-    * 
-    * @access public
-    */
-    public static function get_post_wise_meta(){
-     if( null !== self::$post_meta_by_type ){
-         return self::$post_meta_by_type;
-     }
-
-     global $wpdb;
-     $results = $wpdb->get_results( "
-       SELECT p.post_type, COUNT(pm.meta_id) as meta_count
-       FROM {$wpdb->posts} p
-       JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id
-       WHERE p.post_type NOT IN ('revision', 'nav_menu_item')
-       GROUP BY p.post_type
-      " , ARRAY_A);
-
-      $output;
-
-      foreach( $results as $row ){
-         $output[$row['post_type']] = $row['meta_count'];
-      }
-      self::$post_meta_by_type = $output;
-
-      return $output;
-   }
-
-    /**
-    * get orphaned post types
-    *
-    * @access public
-    */
-   public static function get_orphaned_post_types() {
-		return self::$orphan_post ?? [];
-	 }
-
-   /**
-    * get percentages of all each post types
-    *
-    * @access public
-    */
-   public static function get_percentage_breakdown(){
-      if( null !== self::$percentage ){
-         return self::$percentage;
-      }
-
-      $total_post   = self::get_posts_count();
-      $total_meta   = self::get_total_meta();
-      $post_types   = self::get_type_counts();
-      $meta_by_type = self::get_post_wise_meta();
-      $orphan_post  = self::get_orphaned_post_types();
-     
-      $parcentage_post_type = [];
-      $parcentage_meta_type = [];
-
-      // Register post types parcentage
-      foreach( $post_types as $type => $count ){
-         if( $total_post > 0){
-             $parcentage_post_type[$type] = round( ($count / $total_post) * 100, 2);
-         }else{
-             $parcentage_post_type[$type] = 0;
-         }
-      }
-
-      // Percentages for post wise meta
-      foreach( $meta_by_type as $type => $count ){
-         if( $total_meta > 0){
-             $parcentage_meta_type[$type] = round( ($count / $total_meta) * 100, 2);
-         }else{
-             $parcentage_meta_type[$type] = 0;
-         }
-       }
-
-      // Percentage for orphan post type
-      foreach ( $orphan_post as $type => $count ){
-           if( $total_post > 0){
-             $parcentage_post_type[$type] = round( ($count / $total_post) * 100, 2);
-         }else{
-             $parcentage_post_type[$type] = 0;
-         }
-      }
-
-      // together post and meta in array
-      self::$percentage = [
-         'post_type_percentage' => $parcentage_post_type,
-         'meta_type_parcentage' => $parcentage_meta_type,
-      ];
-
-      return self::$percentage;
-     }
-
-     // check is there any value otherwise keep empty array
-     public static function get_orphaned_post_types() {
-		  return self::$cached_post_types_orphans ?? [];
-	  }
-
-    // final calculation
-    public static function get_details(){
-      $post_types = self::get_posts_count();
-      $post_meta = self::get_post_wise_meta();
-
-      
-    } 
 }
 
-$a = new Post_Type();
-var_dump($a->get_percentage_breakdown());
+$res = new Post_Type();
+$res->get_type_wise_meta_counts();
