@@ -1,5 +1,18 @@
 <?php 
   require_once BB_DIR_PATH . '/includes/PostType.php';
+  $get_post_types = new Post_Type();
+  $get_details    = $get_post_types->get_all_details();
+  
+  // assign the all value in varable for view
+  $post_types_count = count($get_details['registered']);
+  $total_post       = $get_details['total_posts'];
+  $post_meta_total  = $get_details['post_meta_total'];
+  $revisions        = $get_details['revisions'];
+
+
+  echo '<pre>';
+   print_r($get_details);
+  echo '<pre>';
 ?>
 
 <div id="bb-dashboard-post" class="bb-dashboard-section">
@@ -15,28 +28,28 @@
         <div class="bb-desh-card__single">
             <span class="bb-desh-card__title">Post Types</span>
             <span class="bb-desh-card__count">
-                3
+                <?php echo $post_types_count ?>
             </span>
         </div>
 
         <div class="bb-desh-card__single">
             <span class="bb-desh-card__title">Total Items</span>
             <span class="bb-desh-card__count">
-                <span>5</span>
+                <?php echo $total_post  ?>
             </span>
         </div>
 
         <div class="bb-desh-card__single">
             <span class="bb-desh-card__title">Total Meta</span>
             <span class="bb-desh-card__count">
-                <span>4</span>
+                <?php echo $post_meta_total ?>
             </span>
         </div>
 
         <div class="bb-desh-card__single">
             <span class="bb-desh-card__title">Revisions</span>
             <span class="bb-desh-card__count">
-                <span>0</span>
+                <?php echo $revisions  ?>
             </span>
         </div>
     </div>
