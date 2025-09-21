@@ -15,25 +15,26 @@
   $pages                  =  $get_details['registered']['page']['count'];
   $page_percentage        =  $get_details['registered']['page']['percentage'];
   $pages_meta             =  $get_details['registered']['page']['meta'];
-  
+  $page_meta_pg           =  $get_details['registered']['page']['meta_percentage'];
+
   // Post infromation
   $posts                  =  $get_details['registered']['post']['count'];
   $post_percentage        =  $get_details['registered']['post']['percentage'];
   $posts_meta             =  $get_details['registered']['post']['meta'];
+  $post_meta_pg           =  $get_details['registered']['page']['meta_percentage'];
 
   // Wp Navigatio infromation
   $navigation             =  $get_details['registered']['wp_navigation']['count'];
   $navigation_percentage  =  $get_details['registered']['wp_navigation']['percentage'];
   $navigation_meta        =  $get_details['registered']['wp_navigation']['meta'];
+  $navigation_meta_pg     =  $get_details['registered']['wp_navigation']['meta_percentage'];
 
   // Elementor Library infromation
   $E_Library             =  $get_details['registered']['elementor_library']['count'];
   $E_Library_percentage  =  $get_details['registered']['elementor_library']['percentage'];
-  $E_Library_meta        =  $get_details['registered']['wp_navigation']['meta'];
+  $E_Library_meta        =  $get_details['registered']['elementor_library']['meta'];
+  $E_Library_meta_pg     =  $get_details['registered']['elementor_library']['meta_percentage'];
 
-  echo '<pre>';
-   print_r($get_details);
-  echo '<pre>';
 ?>
 
 <div id="bb-dashboard-post" class="bb-dashboard-section">
@@ -97,9 +98,9 @@
                     </td>
                     <td>
                         <span class="bb-data-wrapper">
-                            <span class="bb-data-count">2</span>
+                            <span class="bb-data-count"><?php echo $pages_meta?></span>
                             <span class="bb-data-progress-wrapper">
-                                <span class="bb-data-progress" style="width: <?php echo $page_percentage ?>%;"></span>
+                                <span class="bb-data-progress" style="width: <?php echo $page_meta_pg ?>%;"></span>
                             </span>
                         </span>
                     </td>
@@ -116,9 +117,9 @@
                     </td>
                     <td>
                         <span class="bb-data-wrapper">
-                            <span class="bb-data-count">0</span>
+                            <span class="bb-data-count"><?php echo $posts_meta ?></span>
                             <span class="bb-data-progress-wrapper">
-                                <span class="bb-data-progress" style="width: <?php echo $page_percentage ?>%;"></span>
+                                <span class="bb-data-progress" style="width: <?php echo $post_meta_pg  ?>%;"></span>
                             </span>
                         </span>
                     </td>
@@ -135,9 +136,9 @@
                     </td>
                     <td>
                         <span class="bb-data-wrapper">
-                            <span class="bb-data-count">0</span>
+                            <span class="bb-data-count"><?php echo $navigation_meta ?></span>
                             <span class="bb-data-progress-wrapper">
-                                <span class="bb-data-progress" style="width: <?php echo $page_percentage ?>%;"></span>
+                                <span class="bb-data-progress" style="width: <?php echo $navigation_meta_pg ?>%;"></span>
                             </span>
                         </span>
                     </td>
@@ -154,9 +155,9 @@
                     </td>
                     <td>
                         <span class="bb-data-wrapper">
-                            <span class="bb-data-count">0</span>
+                            <span class="bb-data-count"><?php echo $E_Library_meta  ?></span>
                             <span class="bb-data-progress-wrapper">
-                                <span class="bb-data-progress" style="width: <?php echo $page_percentage ?>%;"></span>
+                                <span class="bb-data-progress" style="width: <?php echo  $E_Library_meta_pg  ?>%;"></span>
                             </span>
                         </span>
                     </td>
