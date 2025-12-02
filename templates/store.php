@@ -1,6 +1,7 @@
 <?php
 
     require_once BB_DIR_PATH . 'includes/PostType.php';
+    require_once BB_DIR_PATH . 'includes/Database.php';
 
     /**
      * ========================
@@ -61,3 +62,9 @@
     }
 
 
+   // ============== Database ===================
+   $res = Database::get_empty_table();
+
+   echo '<pre>';
+   print_r( $res);
+   echo '<pre>';
