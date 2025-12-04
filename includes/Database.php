@@ -52,7 +52,6 @@ class Database{
 		return size_format( $total, 2 );
 	}
 
-
 	// get option count
 	public static function get_option_counts(){
 		global $wpdb;
@@ -67,7 +66,7 @@ class Database{
 		return [
 			'total_options'            => $total_options,
 			'total_transient'          => $total_transient,
-			'total_expired_transients' => $total_expired_transients,
+			'total_expired_transient' => $total_expired_transient,
 			'total_autoloaded_options' => $total_autoloaded_options,
 			'total_autoloaded_size'    => $total_autoloaded_size,
 		];
@@ -93,5 +92,82 @@ class Database{
 	  return array_values( array_filter( $tables, fn( $table ) => $table['row_count'] === 0 ) );
 
 	}
+
+	// get engine summuray
+	public static function get_engine_summary() {
+       $tables = self::get_table_stats();
+
+	   $summary = [];
+
+	   foreach( $tables as $table ){
+		 $engine = $table['ENGINE'] ?? 'UNKNOWN';
+		 $summary[$engine] = isset( $summary[$engine] ) ? $summary[$engine] + 1 : 1; 
+	   }
+
+	   return $summary;
+	}
+
+	// get index effeiancy 
+	public static function get_index_efficiency() {
+      $tables = self::get_table_stats();
+      
+	  $stats = [];
+
+	  foreach( $tables as $table ){
+		$index = $table['index_size'];
+		$data  = $table['data_size'];
+
+		$efficiency = $data ? round( ( $index / $data ) * 100, 2) : 0 ;
+
+		$stats[] = [
+			'table'       => $table['table_name'],
+			'data_size'   => $data,
+			'data_index'  => $index,
+			'index_ratio' => $efficiency
+		];
+	  }
+
+	  usort( $stats, fn( $a, $b ) => $b['index_ratio'] <=> $a['index_ratio'] );
+
+	  return array_slice( $stats, 0, 5 );
+
+	}
+
+	// get havvy load 
+	public static function get_heavy_autoloaded_options( $limit = 10 ) {
+         global $wpdb;
+
+		 return $wpdb->get_results( 
+			"SELECT option_name, LENGTH( option_value ) AS size 
+			 FROM {$wpdb->options} 
+			 WHERE autoload = 'yes' 
+			 ORDER BY size DESC 
+			 LIMIT $limit", 
+			 ARRAY_A
+		  );
+	}
+
+   // get all information in one array
+   public static function get_all() {
+
+      $table_stats   = self::get_table_stats();
+	  $empty_table   = self::get_empty_table();
+	  $larget_tables = self::get_lergest_table();
+
+	  return [
+		'tables'            => $table_stats,
+		'total_table'       => count( $table_stats ),
+		'empty_table'       => $empty_table,
+		'total_empty_table' => count( $empty_table ),
+		'larget_tables'     => $larget_tables,
+		'options'           => self::get_option_counts(),
+		'engine_summary'    => self::get_engine_summary(),
+		'db_size'           => self::get_total_db_size(),
+		'index_efficiency'  => self::get_index_efficiency(),
+		'heavy_autoloaded'  => self::get_heavy_autoloaded_options(),
+	  ];
+
+   }
+
  }
 
