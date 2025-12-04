@@ -13,17 +13,17 @@
     // assign the all value in variable for view
     $post_types_count = isset($get_details['registered']) ? count($get_details['registered']) : 0;
 
-    $total_post       = $get_details['total_posts']        ?? 0;
-    $post_meta_total  = $get_details['post_meta_total']    ?? 0;
-    $revisions        = $get_details['revisions']          ?? 0;
+    $total_post       = $get_details['total_posts']        ?? null;
+    $post_meta_total  = $get_details['post_meta_total']    ?? null;
+    $revisions        = $get_details['revisions']          ?? null;
 
 
     // PAGE information
     if (isset($get_details['registered']['page'])) {
-        $pages            = $get_details['registered']['page']['count']           ?? 0;
-        $page_percentage  = $get_details['registered']['page']['percentage']      ?? 0;
-        $pages_meta       = $get_details['registered']['page']['meta']            ?? 0;
-        $page_meta_pg     = $get_details['registered']['page']['meta_percentage'] ?? 0;
+        $pages            = $get_details['registered']['page']['count']           ?? null;
+        $page_percentage  = $get_details['registered']['page']['percentage']      ?? null;
+        $pages_meta       = $get_details['registered']['page']['meta']            ?? null;
+        $page_meta_pg     = $get_details['registered']['page']['meta_percentage'] ?? null;
     } else {
         $pages = $page_percentage = $pages_meta = $page_meta_pg = 0;
     }
@@ -31,10 +31,10 @@
 
     // POST information
     if (isset($get_details['registered']['post'])) {
-        $posts            = $get_details['registered']['post']['count']           ?? 0;
-        $post_percentage  = $get_details['registered']['post']['percentage']      ?? 0;
-        $posts_meta       = $get_details['registered']['post']['meta']            ?? 0;
-        $post_meta_pg     = $get_details['registered']['post']['meta_percentage'] ?? 0;
+        $posts            = $get_details['registered']['post']['count']           ?? null;
+        $post_percentage  = $get_details['registered']['post']['percentage']      ?? null;
+        $posts_meta       = $get_details['registered']['post']['meta']            ?? null;
+        $post_meta_pg     = $get_details['registered']['post']['meta_percentage'] ?? null;
     } else {
         $posts = $post_percentage = $posts_meta = $post_meta_pg = 0;
     }
@@ -42,10 +42,10 @@
 
     // WP Navigation information
     if (isset($get_details['registered']['wp_navigation'])) {
-        $navigation            = $get_details['registered']['wp_navigation']['count']           ?? 0;
-        $navigation_percentage = $get_details['registered']['wp_navigation']['percentage']      ?? 0;
-        $navigation_meta       = $get_details['registered']['wp_navigation']['meta']            ?? 0;
-        $navigation_meta_pg    = $get_details['registered']['wp_navigation']['meta_percentage'] ?? 0;
+        $navigation            = $get_details['registered']['wp_navigation']['count']           ?? null;
+        $navigation_percentage = $get_details['registered']['wp_navigation']['percentage']      ?? null;
+        $navigation_meta       = $get_details['registered']['wp_navigation']['meta']            ?? null;
+        $navigation_meta_pg    = $get_details['registered']['wp_navigation']['meta_percentage'] ?? null;
     } else {
         $navigation = $navigation_percentage = $navigation_meta = $navigation_meta_pg = 0;
     }
@@ -53,18 +53,25 @@
 
     // Elementor Library information
     if (isset($get_details['registered']['elementor_library'])) {
-        $E_Library            = $get_details['registered']['elementor_library']['count']           ?? 0;
-        $E_Library_percentage = $get_details['registered']['elementor_library']['percentage']      ?? 0;
-        $E_Library_meta       = $get_details['registered']['elementor_library']['meta']            ?? 0;
-        $E_Library_meta_pg    = $get_details['registered']['elementor_library']['meta_percentage'] ?? 0;
+        $E_Library            = $get_details['registered']['elementor_library']['count']           ?? null;
+        $E_Library_percentage = $get_details['registered']['elementor_library']['percentage']      ?? null;
+        $E_Library_meta       = $get_details['registered']['elementor_library']['meta']            ?? null;
+        $E_Library_meta_pg    = $get_details['registered']['elementor_library']['meta_percentage'] ?? null;
     } else {
         $E_Library = $E_Library_percentage = $E_Library_meta = $E_Library_meta_pg = 0;
     }
 
+   
+    /**
+     * ===============================
+     *     store database for render in othere files 
+     * ================================
+     */
+   $get_db_details = Database::get_all(); 
+  
+   $db_size     = $get_db_details[ 'db_size'] ?? null;
+   $db_tables   = $get_db_details['total_table'] ?? null;
+   $db_option   = $get_db_details['options']['total_options'] ?? null;
+   $db_transist = $get_db_details['options']['total_transient'] ?? null;
 
-   // ============== Database ===================
-   $res = Database::get_empty_table();
-
-   echo '<pre>';
-   print_r( $res);
-   echo '<pre>';
+   
