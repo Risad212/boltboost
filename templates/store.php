@@ -67,11 +67,23 @@
      *     store database for render in othere files 
      * ================================
      */
-   $get_db_details = Database::get_all(); 
+   $get_db_details  = Database::get_all(); 
   
-   $db_size     = $get_db_details[ 'db_size'] ?? null;
-   $db_tables   = $get_db_details['total_table'] ?? null;
-   $db_option   = $get_db_details['options']['total_options'] ?? null;
-   $db_transist = $get_db_details['options']['total_transient'] ?? null;
+   $db_size         = $get_db_details[ 'db_size'] ?? null;
+   $db_total_tables = $get_db_details['total_table'] ?? null;
+   $db_option       = $get_db_details['options']['total_options'] ?? null;
+   $db_transist     = $get_db_details['options']['total_transient'] ?? null;
+   $db_tables       = $get_db_details['tables'] ?? null;
+   $core_tables     = [ 'wp_options', 'wp_comments', 'wp_posts', 'wp_users', 
+                        'wp_commentmeta', 'wp_postmeta', 'wp_term_taxonomy', 
+                        'wp_termmeta', 'wp_terms', 'wp_usermeta'];
+
+    $db_core_tables = array_filter($db_tables, function($table) use ($core_tables) {
+        return in_array($table['table_name'], $core_tables);
+    });
+
+    usort($db_core_tables, function($a, $b) {
+        return ($b['data_size'] + $b['index_size']) <=> ($a['data_size'] + $a['index_size']);
+    });
 
    
