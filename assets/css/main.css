@@ -161,6 +161,7 @@ body{
     box-shadow: 0 2px 2px 0 #00000014;
     box-sizing: border-box;
     padding: 32px 24px;
+    margin-bottom: 20px;
 }
 
 .bb-section-title {
@@ -273,4 +274,94 @@ body{
 
 .bb-dashboard__table td:last-child .bb-data-progress-wrapper {
     margin-right: 0;
+}
+
+.ba-dashboard__content__section__data{
+  margin-top: 20px;
+}
+
+.ba-dashboard__content__section__data table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.ba-dashboard__content__section__data table th:first-child {
+    border-radius: 8px 0 0 0;
+    text-align: left;
+}
+
+.ba-dashboard__content__section__data table th:last-child {
+    border-radius: 8px 0 0 0;
+    text-align: right;
+}
+
+.ba-dashboard__content__section__data table th {
+    background-color: #eaecf0;
+    box-sizing: border-box;
+    color: #4b5563;
+    font-weight: 600;
+    height: 40px;
+    line-height: 1.2;
+    min-width: 120px;
+    padding: 0 16px;
+    text-align: center;
+    width: auto;
+    font-size: 14px;
+}
+
+.ba-dashboard__content__section__data table td {
+    border-bottom: 1px solid #eaecf0;
+    border-top: 1px solid #eaecf0;
+    color: #000;
+    height: 40px;
+    padding: 0 16px;
+    text-align: center;
+}
+
+.ba-dashboard__content__section__data table td:first-child {
+    text-align: left;
+}
+
+.ba-dashboard__content__section__data table td:last-child {
+    text-align: right;
+}
+
+.ba-dashboard__content__section__data table td:first-child {
+    border-left: 1px solid #eaecf0;
+}
+
+.ba-dashboard__content__section__data table td:last-child {
+    border-right: 1px solid #eaecf0;
+}
+
+.plugin_table table th:first-child,
+.plugin_table table th:last-child{
+ border-radius: 0;
+}
+
+.plugin_table table th:last-child{
+ text-align: left;
+}
+
+.plugin_table table td:last-child{
+ text-align: left;
+}
+
+.plugin_table .plugin-badge {
+    border-radius: 9999px;
+    display: inline-block;
+    font-size: .75rem;
+    font-weight: 500;
+    margin-left: 5px;
+    padding: 2px 6px;
+}
+
+.plugin_table .active{
+    background-color: #d1f5cd;
+    color: #2e7d32;
+}
+
+.plugin_table .inactive{
+    background-color: #e0e0e0;
+    color: #757575;
 }
