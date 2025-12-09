@@ -18,6 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // inclused folder
 include_once 'includes/Assign-Menu.php';
 include_once 'includes/Assets.php';
+include_once 'database/installer.php';
 
 final class BoltBoost {
 
@@ -36,6 +37,8 @@ final class BoltBoost {
     private function __construct() {
         $this->define_constants();
 
+        register_activation_hook(__FILE__, [$this, 'activate'] );
+
         add_action( 'plugins_loaded', [ $this, 'plugin_setup' ] );
     }
 
@@ -52,6 +55,17 @@ final class BoltBoost {
         }
 
         return $instance;
+    }
+
+    /**
+     * Define activate method
+     * 
+     * @access public
+     */
+    public function activate( ){
+       $installer = new Installer();
+
+       $installer->create_table();
     }
 
     /**
