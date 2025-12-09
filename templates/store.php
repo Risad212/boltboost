@@ -2,6 +2,7 @@
 
     require_once BB_DIR_PATH . 'includes/PostType.php';
     require_once BB_DIR_PATH . 'includes/Database.php';
+    require_once BB_DIR_PATH . 'includes/Plugin.php';
 
     /**
      * ========================
@@ -87,3 +88,21 @@
     });
 
    
+     /**
+     * ===============================
+     *     store plugin for render in othere files 
+     * ================================
+     */
+
+     $get_plugin_details = Plugin::get_all();
+
+     $total_plugin     = $get_plugin_details[ 'counts' ][ 'total' ] ?? null;
+     $activate_plugin  = $get_plugin_details[ 'counts' ][ 'active_count' ] ?? null;
+     $inactive_plugin  = $get_plugin_details[ 'counts' ][ 'inactive' ] ?? null;
+     $abandoned_plugin = $get_plugin_details[ 'counts' ][ 'abandoned' ] ?? null;
+     
+     $all_plugin_info  = $get_plugin_details[ 'plugins' ] ?? null;
+
+    Plugin::get_plugins_data();
+
+
