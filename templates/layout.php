@@ -41,6 +41,14 @@
                    </div>
                 <!-------- Post type template ---------->
                 <?php include_once BB_DIR_PATH .'/templates/post-type.php';?>
+
+                <!-------- Database Template ---------->
+                <?php include_once BB_DIR_PATH .'/templates/database.php';?>
+
+                 <!-------- Plugin Template ---------->
+                <?php include_once BB_DIR_PATH .'/templates/plugin.php';?>
+                 <!-------- Environment Template ---------->
+                <?php include_once BB_DIR_PATH .'/templates/environment.php';?>
             </div>
          </div>
     </div> 
