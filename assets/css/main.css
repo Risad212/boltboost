@@ -365,3 +365,60 @@ body{
     background-color: #e0e0e0;
     color: #757575;
 }
+
+/*============ Environment =============*/
+.ba-dashboard__tab__list {
+    display: flex;
+    gap: 24px;
+}
+
+.ba-dashboard__tab__item {
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    color: #4b5563;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 8px;
+    height: 40px;
+    line-height: 1.2;
+    transition: all .3s ease;
+}
+
+.ba-dashboard__tab__item.active {
+    border-color: #006eff;
+}
+
+.ba-dashboard__tab__panel {
+  display: none;
+}
+.ba-dashboard__tab__panel.active {
+  display: block;
+}
+.ba-dashboard__tab__item {
+  cursor: pointer;
+}
+.ba-dashboard__tab__item.active {
+  font-weight: 600;
+}
+.ba-item--full {
+  grid-column: 1 / -1;
+}
+
+.ba-title{
+    color: #000;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 2px 0 0;
+    width: 200px;
+    display: inline-block;
+}
+
+.ba-item {
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    gap: 20px;
+    padding: 11px 0;
+}
