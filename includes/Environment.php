@@ -66,14 +66,14 @@ class Environment{
 
     public static function get_wordpress_constants( ){
         return [
-            'WP_DEBUG'             => define( 'WP_DEBUG' ) ? WP_DEBUG : null,
-            'WP_DEBUG_DISPLAY'     => define( 'WP_DEBUG_DISPLAY' ) ? WP_DEBUG_DISPLAY : null,
-            'WP_DEBUG_LOG'         => define( 'WP_DEBUG_LOG' ) ? WP_DEBUG_LOG : null,
-            'SCRIPT_DEBUG'         => define( 'SCRIPT_DEBUG' ) ? SCRIPT_DEBUG : null,
-            'WP_CACHE'             => define( 'WP_CACHE' ) ? WP_CACHE : null,
-            'CONCATENATE_SCRIPTS'  => define( 'CONCATENATE_SCRIPTS' ) ? constant( 'CONCATENATE_SCRIPTS' ) : null,
-            'COMPRESS_SCRIPTS'     => define( 'COMPRESS_SCRIPTS' ) ? constant( 'COMPRESS_SCRIPTS' ) : null,
-            'COMPRESS_CSS'         => define( 'COMPRESS_CSS' ) ? constant( 'COMPRESS_CSS' ) : null,
+            'WP_DEBUG'             => defined( 'WP_DEBUG' ) ? WP_DEBUG : null,
+            'WP_DEBUG_DISPLAY'     => defined( 'WP_DEBUG_DISPLAY' ) ? WP_DEBUG_DISPLAY : null,
+            'WP_DEBUG_LOG'         => defined( 'WP_DEBUG_LOG' ) ? WP_DEBUG_LOG : null,
+            'SCRIPT_DEBUG'         => defined( 'SCRIPT_DEBUG' ) ? SCRIPT_DEBUG : null,
+            'WP_CACHE'             => defined( 'WP_CACHE' ) ? WP_CACHE : null,
+            'CONCATENATE_SCRIPTS'  => defined( 'CONCATENATE_SCRIPTS' ) ? constant( 'CONCATENATE_SCRIPTS' ) : null,
+            'COMPRESS_SCRIPTS'     => defined( 'COMPRESS_SCRIPTS' ) ? constant( 'COMPRESS_SCRIPTS' ) : null,
+            'COMPRESS_CSS'         => defined( 'COMPRESS_CSS' ) ? constant( 'COMPRESS_CSS' ) : null,
         ];
     }
 
@@ -92,14 +92,14 @@ class Environment{
 			return [];
 		}
 
-        $server_info = $wpdb->get_var( 'SELECT VERSION()' );
+        $server_version = $wpdb->get_var( 'SELECT VERSION()' );
 
         return [
             'database_name'  => $wpdb->dbname,
             'database_user'  => $wpdb->dbuser,
             'database_host'  => $wpdb->dbhost,
 			'server_version' => $server_version,
-        ]
+        ];
     }
 
     public static function get_all( ){
@@ -126,7 +126,7 @@ class Environment{
 				'development_mode' => self::get_development_mode(),
 			],
 			'database'             => self::get_database_info(),
-        ]
+        ];
     }
     
 }
