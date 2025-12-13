@@ -3,6 +3,7 @@
     require_once BB_DIR_PATH . 'includes/PostType.php';
     require_once BB_DIR_PATH . 'includes/Database.php';
     require_once BB_DIR_PATH . 'includes/Plugin.php';
+    require_once BB_DIR_PATH . 'includes/Environment.php';
 
     /**
      * ========================
@@ -77,7 +78,7 @@
    $db_tables       = $get_db_details['tables'] ?? null;
    $core_tables     = [ 'wp_options', 'wp_comments', 'wp_posts', 'wp_users', 
                         'wp_commentmeta', 'wp_postmeta', 'wp_term_taxonomy', 
-                        'wp_termmeta', 'wp_terms', 'wp_usermeta'];
+                        'wp_termmeta', 'wp_terms', 'wp_usermeta' ];
 
     $db_core_tables = array_filter($db_tables, function($table) use ($core_tables) {
         return in_array($table['table_name'], $core_tables);
@@ -103,6 +104,57 @@
      
      $all_plugin_info  = $get_plugin_details[ 'plugins' ] ?? null;
 
-    Plugin::get_plugins_data();
+    
+
+     /**
+     * ===============================
+     *     store Envirement snapshot data for render in othere files 
+     * ================================
+     */
+
+     $get_env_details = Environment::get_all();
 
 
+     $php_version          = $get_env_details[ 'php' ][ 'version' ] ?? null;
+     $php_sapi             = $get_env_details[ 'php' ][ 'sapi' ] ?? null;
+     $php_user             = $get_env_details[ 'php' ][ 'user' ] ?? null;
+     $max_execution_time   = $get_env_details[ 'php' ][ 'ini_values' ][ 'max_execution_time' ] ?? null;
+     $memory_limit         = $get_env_details[ 'php' ][ 'ini_values' ][ 'memory_limit' ] ?? null;
+     $upload_max_filesize  = $get_env_details[ 'php' ][ 'ini_values' ][ 'upload_max_filesize' ] ?? null;
+     $post_max_size        = $get_env_details[ 'php' ][ 'ini_values' ][ 'post_max_size' ] ?? null;
+     $display_errors       = $get_env_details[ 'php' ][ 'ini_values' ][ 'display_errors' ] ?? null;
+     $log_errors           = $get_env_details[ 'php' ][ 'ini_values' ][ 'log_errors' ] ?? null;
+     $php_extensions       = $get_env_details[ 'php' ][ 'extensions' ] ?? null;
+     $php_error_reporting  = $get_env_details[ 'php' ][ 'error_reporting' ] ?? null;
+    
+     /*----- Server -----*/
+     $server_software      = $get_env_details[ 'server' ][ 'software' ];
+     $server_address       = $get_env_details[ 'server' ][ 'address' ];
+     $server_os            = $get_env_details[ 'server' ][ 'os' ];
+     $server_host          = $get_env_details[ 'server' ][ 'host' ];
+     $server_arch          = $get_env_details[ 'server' ][ 'arch' ];
+
+     /*----- WordPress -----*/
+     $wp_version           = $get_env_details['wordpress']['version'] ?? '';
+     $wp_constants         = $get_env_details['wordpress']['constants'] ?? [];
+     $environment_type     = $get_env_details['wordpress']['environment_type'] ?? '';
+     $development_mode     = $get_env_details['wordpress']['development_mode'] ?? '';
+
+     $wp_debug             = $get_env_details[ 'wordpress' ][ 'constants' ][ 'WP_DEBUG' ] ?? null;
+     $wp_debug_display     = $get_env_details[ 'wordpress' ][ 'constants' ][ 'WP_DEBUG_DISPLAY' ] ?? null;
+     $wp_debug_log         = $get_env_details[ 'wordpress' ][ 'constants' ][ 'WP_DEBUG_LOG' ] ?? null;
+     $script_debug         = $get_env_details[ 'wordpress' ][ 'constants' ][ 'SCRIPT_DEBUG' ] ?? null;
+     $wp_cache             = $get_env_details[ 'wordpress' ][ 'constants' ][ 'WP_CACHE' ] ?? null;
+     $concatenate_scripts  = $get_env_details[ 'wordpress' ][ 'constants' ][ 'CONCATENATE_SCRIPTS' ] ?? null;
+     $compress_scripts     = $get_env_details[ 'wordpress' ][ 'constants' ][ 'COMPRESS_SCRIPTS' ] ?? null;
+     $compress_css         = $get_env_details[ 'wordpress' ][ 'constants' ][ 'COMPRESS_CSS' ] ?? null;
+     $environment_type     = $get_env_details[ 'wordpress' ][ 'environment_type' ] ?? null;
+     $development_mode     = $get_env_details[ 'wordpress' ][ 'development_mode' ] ?? null;
+   
+    /*----- Database -----*/
+     $database_name        = $get_env_details[ 'database' ][ 'database_name' ];
+     $database_user        = $get_env_details[ 'database' ][ 'database_user' ];
+     $database_host        = $get_env_details[ 'database' ][ 'database_host' ];
+     $server_version       = $get_env_details[ 'database' ][ 'server_version' ];
+
+  
