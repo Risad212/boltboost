@@ -1,6 +1,5 @@
 <?php
 
-require_once BB_DIR_PATH. '/database/db-option.php';
 
 class Plugin {
   
@@ -51,7 +50,7 @@ class Plugin {
 	  $last_updated = $is_wp_repo ? ( $wp_org_info->last_updated ?? null ): null;
 	  $is_abandoned = $last_updated ? self::is_abandonedis_abandoned( $last_updated ) : null; 
 
-	  $cached = DB_Option::get_option( $option_key, 'plugin_basic_cache' );
+	  $cached = self::get_option( $option_key, 'plugin_basic_cache' );
 
 	  if ( $cached && ! empty( $cached['data'] ) ) {
 			$data              = json_decode( $cached['data'], true );
@@ -73,11 +72,12 @@ class Plugin {
 			'author'        => $plugin_data['Author'] ?? '',
 		];
 
-		DB_Option::insert_option( $option_key, 'plugin_basic_cache', $data );
+		self::insert_option( $option_key, 'plugin_basic_cache', $data );
 
 		return $data;
 	}
 
+	// fetch plugin info from org
 	public static function fetch_wp_org_info( $slug ){
        if ( ! function_exists( 'plugins_api' ) ){
             require_once ABSPATH. 'wp-admin/includes/plugin-install.php';
@@ -170,6 +170,36 @@ class Plugin {
 		}
 
 	    return $suggestions;
+	}
+
+	public static function insert_option( $option_key, $context, $data ){
+     
+		if ( get_option( $option_key, null ) === null ) {
+			 $data = add_option( $option_key, $data );
+             set_transient( $option_key, $data, HOUR_IN_SECONDS );
+			 return $data;
+		}
+
+		return false;
+    }
+
+	 public static function get_option( $option_key, $context ) {
+
+		$option_name = "boltboost_{$context}_{$option_key}";
+
+		$cached_data = get_transient( $option_name );
+
+		if ( false !== $cached_data ) {
+			return $cached_data;
+		}
+
+		$data = get_option( $option_name );
+
+		if ( $data !== false ) {
+			set_transient( $option_name, $data, HOUR_IN_SECONDS );
+		}
+
+		return $data;
 	}
 
 	public static function get_all() {
