@@ -59,7 +59,7 @@ class Plugin {
 			return $data;
 		}
 
-	  $data                 = [
+	  $data        = [
 			'name'          => $plugin_data['Name'] ?? '',
 			'slug'          => $slug,
 			'plugin_file'   => $plugin_file,
@@ -172,23 +172,24 @@ class Plugin {
 	    return $suggestions;
 	}
 
-	public static function insert_option( $option_key, $context, $data ){
-     
-		if ( get_option( $option_key, null ) === null ) {
-			 $data = add_option( $option_key, $data );
-             set_transient( $option_key, $data, HOUR_IN_SECONDS );
-			 return $data;
-		}
+   public static function insert_option( $option_key, $context, $data, $expire = HOUR_IN_SECONDS ) {
+    $option_name = "boltboost_{$context}_{$option_key}";
 
-		return false;
+    if ( get_option( $option_name ) === false ) {
+        add_option( $option_name, $data );
+    } else {
+        update_option( $option_name, $data );
     }
 
-	 public static function get_option( $option_key, $context ) {
+    set_transient( $option_name, $data, $expire );
 
+    return $data;
+    }
+
+	public static function get_option( $option_key, $context, $expire = HOUR_IN_SECONDS ) {
 		$option_name = "boltboost_{$context}_{$option_key}";
 
 		$cached_data = get_transient( $option_name );
-
 		if ( false !== $cached_data ) {
 			return $cached_data;
 		}
@@ -196,11 +197,12 @@ class Plugin {
 		$data = get_option( $option_name );
 
 		if ( $data !== false ) {
-			set_transient( $option_name, $data, HOUR_IN_SECONDS );
+			set_transient( $option_name, $data, $expire );
 		}
 
 		return $data;
 	}
+
 
 	public static function get_all() {
 		return [
