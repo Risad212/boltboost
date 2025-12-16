@@ -38,44 +38,44 @@ class Plugin {
     }
 
 	// get basic plugin data
-	public static function get_basic_plugin_data( $plugin_file, $plugin_data ) {
-      self::ensure_wp_plugin();
+    public static function get_basic_plugin_data( $plugin_file, $plugin_data ) {
 
-	  $slug       = dirname( $plugin_file );
-	  $version    = $plugin_data['Version']?? 'Unknown';
-	  $option_key = "plugin_data_{$slug}_v{$version}";
+    self::ensure_wp_plugin();
 
-	  $wp_org_info  = self::fetch_wp_org_info( $slug );
-	  $is_wp_repo   = ! empty( $wp_org_info ) && ! is_wp_error( $wp_org_info );
-	  $last_updated = $is_wp_repo ? ( $wp_org_info->last_updated ?? null ): null;
-	  $is_abandoned = $last_updated ? self::is_abandonedis_abandoned( $last_updated ) : null; 
+    $slug       = dirname( $plugin_file );
+    $version    = $plugin_data['Version'] ?? 'Unknown';
+    $option_key = "plugin_data_{$slug}_v{$version}";
+    $option_name = "boltboost_plugin_cache_{$option_key}";
 
-	  $cached = self::get_option( $option_key, 'plugin_basic_cache' );
+    $cached = get_transient( $option_name );
+    if ( false !== $cached ) {
+        $cached['is_active'] = in_array( $plugin_file, self::$active_plugins );
+        return $cached;
+    }
 
-	  if ( $cached && ! empty( $cached['data'] ) ) {
-			$data              = json_decode( $cached['data'], true );
-			$data['is_active'] = in_array( $plugin_file, self::$active_plugins );
+    $wp_org_info  = self::fetch_wp_org_info( $slug );
+    $is_wp_repo   = ! empty( $wp_org_info ) && ! is_wp_error( $wp_org_info );
+    $last_updated = $is_wp_repo ? ( $wp_org_info->last_updated ?? null ) : null;
+    $is_abandoned = $last_updated ? self::is_abandonedis_abandoned( $last_updated ) : null;
 
-			return $data;
-		}
+    $data = [
+        'name'          => $plugin_data['Name'] ?? '',
+        'slug'          => $slug,
+        'plugin_file'   => $plugin_file,
+        'needs_upgrade' => isset( self::$plugin_updates[$plugin_file] ),
+        'is_wp_repo'    => $is_wp_repo,
+        'is_active'     => in_array( $plugin_file, self::$active_plugins ),
+        'last_updated'  => $last_updated,
+        'is_abandoned'  => $is_abandoned,
+        'version'       => $version,
+        'author'        => $plugin_data['Author'] ?? '',
+    ];
 
-	  $data        = [
-			'name'          => $plugin_data['Name'] ?? '',
-			'slug'          => $slug,
-			'plugin_file'   => $plugin_file,
-			'needs_upgrade' => isset( self::$plugin_updates[$plugin_file] ),
-			'is_wp_repo'    => $is_wp_repo,
-			'is_active'     => in_array( $plugin_file, self::$active_plugins ),
-			'last_updated'  => $last_updated,
-			'is_abandoned'  => $is_abandoned,
-			'version'       => $version,
-			'author'        => $plugin_data['Author'] ?? '',
-		];
+    set_transient( $option_name, $data, HOUR_IN_SECONDS );
 
-		self::insert_option( $option_key, 'plugin_basic_cache', $data );
+    return $data;
 
-		return $data;
-	}
+    }
 
 	// fetch plugin info from org
 	public static function fetch_wp_org_info( $slug ){
@@ -170,37 +170,6 @@ class Plugin {
 		}
 
 	    return $suggestions;
-	}
-
-   public static function insert_option( $option_key, $context, $data, $expire = HOUR_IN_SECONDS ) {
-    $option_name = "boltboost_{$context}_{$option_key}";
-
-    if ( get_option( $option_name ) === false ) {
-        add_option( $option_name, $data );
-    } else {
-        update_option( $option_name, $data );
-    }
-
-    set_transient( $option_name, $data, $expire );
-
-    return $data;
-    }
-
-	public static function get_option( $option_key, $context, $expire = HOUR_IN_SECONDS ) {
-		$option_name = "boltboost_{$context}_{$option_key}";
-
-		$cached_data = get_transient( $option_name );
-		if ( false !== $cached_data ) {
-			return $cached_data;
-		}
-
-		$data = get_option( $option_name );
-
-		if ( $data !== false ) {
-			set_transient( $option_name, $data, $expire );
-		}
-
-		return $data;
 	}
 
 
