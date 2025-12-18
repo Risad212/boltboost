@@ -14,8 +14,8 @@ class Assign_Menu {
      */
     public function admin_menu() {
         add_menu_page(
-        __( 'BoltBoost', 'pedro-elementor-addons' ),  // Page title
-        __( 'BoltBoost', 'pedro-elementor-addons' ), // Menu title
+        __( 'BoltBoost', 'boltboost' ),  // Page title
+        __( 'BoltBoost', 'boltboost' ), // Menu title
         'manage_options',                            // Capability
         'boltboost',                                 // Menu slug
         [ $this, 'plugin_page' ],                    // Callback function
